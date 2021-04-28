@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hedsam API Server configuration",
+  "description": "",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["*"],
+
+  "definitions": {
+    "tcp-service": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "port", "address"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "port": { "type": "number" },
+        "address": { "type": "string" }
+      }
+    }
+  },
+
+  "control": {
+    "processes": [
+      {
+        "type": "service",
+        "name": "hedsam-api-server",
+        "exec": "python ."
+      }
+    ]
+  },
+
+  "properties": {
+    "$schema": { "type": "string" },
+    "network": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "https": { "$ref": "#/definitions/tcp-service" },
+        "http": { "$ref": "#/definitions/tcp-service" },
+        "hedsam": {
+          "title": "Specifies the IP adderss and Port of Hedsam Databus Controller",
+          "type": "object"
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bypass_login": { "type": "boolean" },
+        "require_uuid": { "type": "boolean" },
+        "require_origin": { "type": "boolean" },
+        "default_allow_mobile_api": { "type": ["boolean", "string"] },
+        "max_session_time": { "type": "number", "title": "value is in hours" },
+        "ssl_certificate": { "type": "string" },
+        "ssl_key": { "type": "string" }
+      }
+    },
+    "features": {
+      "type": "object",
+      "properties": {
+        "absencecodecharts": { "type": "boolean" }
+      }
+    },
+    "api": {
+      "title": "Controls client access to API functions",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "devices": { "type": "boolean" },
+        "registrations": { "type": "boolean" },
+        "debug": { "type": "boolean" }
+      }
+    },
+    "paths": {
+      "title": "Allows overriding database paths\nIf unset the path will be read from registry",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "root": { "type": "string" },
+        "all": { "type": "string" },
+        "data": { "type": "string" },
+        "regist": { "type": "string" },
+        "hours": { "type": "string" }
+      }
+    }
+  }
+}
