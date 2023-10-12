@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LDAP Server persons json file schema",
+  "type": ["object"],
+  "required": ["server1", "server2"],
+  "definitions": {
+    "attributes": {
+      "properties": {
+        "objectClass": { "type": ["string"] },
+        "dn": { "type": ["string"] },
+        "sAMAccountName": { "type": ["string"] },
+        "dc": {
+          "type": ["array"],
+          "items": { "type": ["string"] }
+        },
+        "o": { "type": ["string"] },
+        "givenName": { "type": ["string"] },
+        "sn": { "type": ["string"] },
+        "persongrp": { "type": ["string", "array"] },
+        "usergrp": { "type": ["string", "array"] }
+      },
+      "additionalProperties": false
+    },
+    "fields": {
+      "properties": {
+        "dn": { "type": ["string"] },
+        "password": { "type": ["string"] },
+        "type": { "type": ["string"] },
+        "attributes": { "$ref":"#/definitions/attributes" }
+      },
+      "additionalProperties": false
+    },
+    "server": {
+      "type": ["array"],
+      "items": { "$ref":"#/definitions/fields" }
+    }
+  },
+  "properties": {
+    "$schema": { "type": ["string"] },
+    "server1": { "$ref":"#/definitions/server" },
+    "server2": { "$ref":"#/definitions/server" }
+  },
+  "additionalProperties": false
+}
